@@ -1,0 +1,40 @@
+.delete-buttons{
+    background-color: red;
+    color:black;
+    border-radius: 5px;
+}
+
+.header{
+    background-color: yellow;
+}
+.restaurant-name{
+    text-align: center;
+}
+.order-lists{
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+}
+.table-1-list-div, .table-2-list-div, .table-3-list-div{
+    flex: 1;
+    background-color: blueviolet;
+    padding-top: 30px;
+}
+.input-div{
+    display: flex;
+    flex-direction: row;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 30px;
+}
+.inputs{
+    flex:1;
+}
+.submit-button-div{
+    text-align: center;
+}
+.submit-button{
+    color:black;
+    background-color: aqua;
+    border-radius: 5px;
+}
