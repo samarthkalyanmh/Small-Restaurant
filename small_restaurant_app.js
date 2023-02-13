@@ -1,46 +1,78 @@
 window.addEventListener("DOMContentLoaded",()=>{
-    axios.get('https://crudcrud.com/api/803d51670cab44e3ad7bd4598a118ca4/Orders')
+
+    try{
+        axios.get('https://crudcrud.com/api/a3bf909391fe40829451019aed2470cb/Orders')
         .then((res)=>{
             for(let i=0; i<res.data.length; i++){
                 showOrderOnScreen(res.data[i])
             }
         })
+    }
+    catch(err){
+        console.log(err)
+    }
+    
 })
 
-function submitOrder(e){
-    const price = document.getElementById('price').value
-    const dish = document.getElementById('dish').value
-    const tableNumber = document.getElementById('table-number').value
-    console.log(price, dish, tableNumber)
-
-    let obj={
-        price:price,
-        dish:dish,
-        tableNumber:tableNumber
-    };
-
-    axios.post('https://crudcrud.com/api/803d51670cab44e3ad7bd4598a118ca4/Orders', obj)
-        .then((res)=>{
-            showOrderOnScreen(res.data)
-        })
-        .catch((err)=>console.log(err))
-}
-
-function showOrderOnScreen(order){
+async function submitOrder(e){
     
-    let orderELement = `<li id='${order._id}'>${order.price}-${order.dish}-table ${order.tableNumber}
-    <button onclick=deleteOrder('${order._id}') class="delete-buttons">Delete Order</button>
-    </li>`
-    let parDiv = document.getElementById(`table-${order.tableNumber}-list`)
-    parDiv.innerHTML = parDiv.innerHTML + orderELement
+    try{
+        const price = document.getElementById('price').value
+        const dish = document.getElementById('dish').value
+        const tableNumber = document.getElementById('table-number').value
+
+        console.log(price, dish, tableNumber)
+
+        let obj={
+            price:price,
+            dish:dish,
+            tableNumber:tableNumber
+        };
+
+        console.log(obj)
+
+        await axios.post('https://crudcrud.com/api/a3bf909391fe40829451019aed2470cb/Orders', obj)
+            .then((res)=>{
+                showOrderOnScreen(res.data)
+                document.getElementById('price').value = ''
+                document.getElementById('dish').value = ''
+                document.getElementById('table-number').value = '1'
+            })
+    }
+
+    catch(err){
+        console.log(err)
+    }
 }
 
-function deleteOrder(_id){
-    axios.delete(`https://crudcrud.com/api/803d51670cab44e3ad7bd4598a118ca4/Orders/${_id}`)
+async function showOrderOnScreen(order){
+    
+    try{
+        let orderELement = `<li id='${order._id}'>${order.price}-${order.dish}-table ${order.tableNumber}
+        <button onclick=deleteOrder('${order._id}') class="delete-buttons">Delete Order</button>
+        </li>`
+        let parDiv = document.getElementById(`table-${order.tableNumber}-list`)
+        console.log('table number in obj is '+ order.tableNumber)
+        console.log('parDiv=', parDiv)
+        parDiv.innerHTML = parDiv.innerHTML + orderELement
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+async function deleteOrder(_id){
+    try{
+        await axios.delete(`https://crudcrud.com/api/a3bf909391fe40829451019aed2470cb/Orders/${_id}`)
         .then(()=>{
             let orderToDelete = document.getElementById(`${_id}`)
             let par = orderToDelete.parentElement
             par.removeChild(orderToDelete)
         })
-        .catch((err)=>console.log(err))
+    }
+
+
+        catch(err){
+            console.log(err)
+        }
 }
